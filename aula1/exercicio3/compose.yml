@@ -1,0 +1,12 @@
+services:
+  busybox_ipv4:
+    image: busybox
+    command: sleep infinity
+    networks:
+      - ipv4_net
+
+  busybox_ipv6:
+    image: busybox
+    command: sleep infinity
+    networks:
+      - ipv6_net

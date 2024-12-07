@@ -1,0 +1,43 @@
+services:
+  web1:
+    image: busybox
+    command: sleep infinity
+    networks:
+      - net1
+
+  web2:
+    image: busybox
+    command: sleep infinity
+    networks:
+      - net2
+
+  web3:
+    image: busybox
+    command: sleep infinity
+    networks:
+      - net3
+
+networks:
+  net1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24 
+
+  net2:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+
+  net3:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.3.0/24
+
+  net4:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.4.0/24
