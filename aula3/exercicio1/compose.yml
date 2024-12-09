@@ -6,13 +6,13 @@ services:
     working_dir: /app
     command: python server.py
     ports:
-      - "1337:1337"
+      - "8080:8080"
 
-  python_client:
-    image: python:3.13-slim
+  busybox_client:
+    image: busybox:latest
     volumes:
       - .:/app
     working_dir: /app
-    command: python client.py
+    command: sleep infinity
     depends_on:
       - python_server

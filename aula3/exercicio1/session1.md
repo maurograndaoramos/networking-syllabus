@@ -1,0 +1,51 @@
+# README
+
+## Description
+
+This exercise consists of a simple Python socket server and a BusyBox client, orchestrated using Docker Compose. The server listens for incoming connections, authenticates clients with a password, and echoes back any messages sent by authenticated clients. The BusyBox client is used to connect to the server using Telnet.
+
+## Files
+
+### [server.py](#file:server.py-context)
+
+This Python script sets up a socket server that:
+- Listens on `0.0.0.0:8080`.
+- Accepts incoming connections.
+- Authenticates clients with a password ("GiveMeADecentGrade").
+- Echoes back any messages sent by authenticated clients.
+- Closes the connection after a period of inactivity (30 seconds + 2 seconds to account sleep function).
+
+### [docker-compose.yml](#file:compose.yml-context)
+
+This Docker Compose file defines two containers:
+- `python_server`: Runs the Python socket server.
+- `busybox_client`: Runs a BusyBox container for testing the server.
+
+## Tutorial
+
+Follow these steps to set up and run the project:
+
+1. **Start the services using Docker Compose:**
+   ```sh
+   docker-compose up -d
+   ```
+
+2. **Access the BusyBox client container:**
+   ```sh
+   docker exec -it exercicio1-busybox_client-1 sh
+   ```
+
+3. **Connect to the Python server using Telnet:**
+   ```sh
+   telnet exercicio1-python_server-1 8080
+   ```
+
+4. **Follow the prompts to authenticate and interact with the server.**
+
+## Notes
+
+- Ensure Docker and Docker Compose are installed on your system.
+- The default password for authentication is "GiveMeADecentGrade".
+- The server will close the connection after 32 seconds of inactivity.
+
+Enjoy experimenting with the socket server and client setup!
