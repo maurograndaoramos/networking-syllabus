@@ -1,0 +1,7 @@
+services:
+  python:
+    build: .
+    volumes:
+      - .:/app_intermediate
+    working_dir: /app_intermediate
+    command: python app_intermediate.py

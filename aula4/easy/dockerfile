@@ -1,0 +1,5 @@
+FROM python:3.13-slim
+RUN pip install requests
+WORKDIR /app_easy
+COPY app_easy.py /app_easy
+CMD ["python", "app_easy.py"]

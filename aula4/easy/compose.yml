@@ -1,0 +1,7 @@
+services:
+  python:
+    build: .
+    volumes:
+      - .:/app_easy
+    working_dir: /app_easy
+    command: python app_easy.py
