@@ -168,10 +168,6 @@ make down
 
 This stops and removes the containers.
 
-# Additional Documentation
-
-
-
 ## Docker Compose Configuration (`compose.yml`)
 ### API Service
 - **Build Configuration**
