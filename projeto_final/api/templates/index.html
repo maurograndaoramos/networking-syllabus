@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>List of Things</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .item-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .item-name {
+            margin-right: 10px;
+        }
+        .item-container button, form button {
+            margin-left: 5px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>List of Things</h1>
+    
+    <form id="addForm">
+        <input type="text" id="newItemName" placeholder="New item name" required />
+        <button type="submit">Add</button>
+    </form>
+
+    <div id="itemList"></div>
+
+    <script>
+        const itemList = document.getElementById('itemList');
+        const addForm = document.getElementById('addForm');
+        const newItemName = document.getElementById('newItemName');
+
+        // Fetch and display items
+        async function loadItems() {
+            const response = await fetch('/items', { method: 'GET' });
+            const data = await response.json();
+            displayItems(data);
+        }
+
+        function displayItems(items) {
+            itemList.innerHTML = '';
+            items.forEach((item, index) => {
+                const container = document.createElement('div');
+                container.className = 'item-container';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'item-name';
+                nameSpan.textContent = item.name;
+
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Edit';
+                editBtn.addEventListener('click', () => {
+                    const newName = prompt('Enter new name:', item.name);
+                    if (newName && newName.trim() !== '') {
+                        updateItem(index, { name: newName.trim() });
+                    }
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', () => {
+                    deleteItem(index);
+                });
+
+                container.appendChild(nameSpan);
+                container.appendChild(editBtn);
+                container.appendChild(deleteBtn);
+
+                itemList.appendChild(container);
+            });
+        }
+
+        async function addItem(name) {
+            const response = await fetch('/items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+            if (response.ok) {
+                loadItems();
+                newItemName.value = '';
+            } else {
+                alert('Error adding item');
+            }
+        }
+
+        async function updateItem(index, updatedData) {
+            const response = await fetch(`/items/${index}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            });
+            if (response.ok) {
+                loadItems();
+            } else {
+                alert('Error updating item (item may not exist).');
+            }
+        }
+
+        async function deleteItem(index) {
+            const response = await fetch(`/items/${index}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                loadItems();
+            } else {
+                alert('Error deleting item (item may not exist).');
+            }
+        }
+
+        // Form submit handler
+        addForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = newItemName.value.trim();
+            if (name) {
+                addItem(name);
+            }
+        });
+
+        // Initial load
+        loadItems();
+    </script>
+</body>
+</html>

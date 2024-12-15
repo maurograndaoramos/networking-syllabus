@@ -1,8 +1,12 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
 items = []
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/items', methods=['GET'])
 def get_items():
@@ -32,4 +36,4 @@ def delete_item(item_id):
         return jsonify({"error": "Item not found"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
