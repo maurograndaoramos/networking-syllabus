@@ -1,0 +1,46 @@
+services:
+  nginx_1:
+    image: nginx
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    networks:
+      - net1
+
+  nginx_2:
+    image: nginx
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8081:8081"
+    networks:
+      - net2
+
+  alpine:
+    image: alpine
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - net1
+      - net2
+    depends_on:
+      - nginx_1
+      - nginx_2
+
+networks:
+  net1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+
+  net2:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24

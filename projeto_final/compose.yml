@@ -6,8 +6,9 @@ services:
     expose:
       - "5000"
     networks:
-      custom_network:
+      custom_network1:
         ipv4_address: 172.20.0.2
+      custom_network2:
 
   nginx:
     image: nginx:latest
@@ -17,12 +18,27 @@ services:
     ports:
       - "443:443"
     networks:
-      custom_network:
+      custom_network1:
         ipv4_address: 172.20.0.3
 
+
+  busybox_DB_mockup:
+    image: busybox:latest
+    command: sleep infinity
+    networks:
+      custom_network2:
+        ipv4_address: 172.21.0.2
+
+
 networks:
-  custom_network:
+  custom_network1:
     driver: bridge
     ipam:
       config:
         - subnet: 172.20.0.0/16
+
+  custom_network2:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16

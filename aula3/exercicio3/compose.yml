@@ -1,0 +1,30 @@
+services:
+  containerA:
+    image: nginx
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    networks:
+      - net1
+
+  containerB:
+    image: nginx
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8001:8001"
+    networks:
+      - net2
+
+  reverse-proxy:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - 
+  depends_on:
+    - containerA
+    - containerB

@@ -6,6 +6,7 @@ COPY api/app.py /app
 COPY api/templates /app/templates
 
 RUN pip install Flask
+RUN apt update && apt install -y iputils-ping dnsutils
 
 EXPOSE 5000
 
